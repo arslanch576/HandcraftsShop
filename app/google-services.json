@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "90533681862",
+    "project_id": "handcrafts-shop-2f03c",
+    "storage_bucket": "handcrafts-shop-2f03c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90533681862:android:293cd67413d89c352a15c7",
+        "android_client_info": {
+          "package_name": "com.coderobust.handcraftsshop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwA_-ZYE2CWHQouydBn-dBAGByV3tWx8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
