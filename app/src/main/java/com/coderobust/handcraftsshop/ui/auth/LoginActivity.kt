@@ -1,28 +1,49 @@
-package com.coderobust.handcraftsshop
+package com.coderobust.handcraftsshop.ui.auth
 
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import com.coderobust.handcraftsshop.databinding.ActivityLoginBinding
-import com.coderobust.handcraftsshop.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
+    lateinit var progressDialog: ProgressDialog
     lateinit var binding: ActivityLoginBinding
+    lateinit var viewModel:LoginViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(FirebaseAuth.getInstance().currentUser!=null){
-            startActivity(Intent(this,MainActivity::class.java))
-            finish()
-            return
+        viewModel=LoginViewModel()
+        viewModel.checkUser()
+
+        progressDialog=ProgressDialog(this)
+        progressDialog.setMessage("Please wait while we check your credentials...")
+        progressDialog.setCancelable(false)
+
+        lifecycleScope.launch {
+            viewModel.failureMessage.collect{
+                progressDialog.dismiss()
+                if (it!=null){
+                    Toast.makeText(this@LoginActivity,it,Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.currentUser.collect{
+                if (it!=null){
+                    progressDialog.dismiss()
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
+                }
+            }
         }
 
         binding.loginbtn.setOnClickListener {
@@ -38,21 +59,10 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val progressDialog=ProgressDialog(this)
-            progressDialog.setMessage("Please wait while we check your credentials...")
-            progressDialog.setCancelable(false)
             progressDialog.show()
 
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password).addOnCompleteListener {
-                progressDialog.dismiss()
-                if (it.isSuccessful) {
-                    Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this, "Login Failed ${it.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
+            viewModel.login(email,password)
+
         }
 
 
