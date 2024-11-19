@@ -1,4 +1,4 @@
-package com.coderobust.handcraftsshop.ui.auth
+package com.coderobust.handcraftsshop.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
