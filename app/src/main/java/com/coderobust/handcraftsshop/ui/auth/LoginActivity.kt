@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.coderobust.handcraftsshop.databinding.ActivityLoginBinding
-import com.coderobust.handcraftsshop.ui.MainActivity
+import com.coderobust.handcraftsshop.ui.main.MainActivity
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
