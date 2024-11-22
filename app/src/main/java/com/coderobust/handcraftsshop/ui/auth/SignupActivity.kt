@@ -7,8 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.coderobust.handcraftsshop.databinding.ActivitySignupBinding
-import com.coderobust.handcraftsshop.ui.main.MainActivity
 import kotlinx.coroutines.launch
+import ui.main.MainActivity
 
 class SignupActivity : AppCompatActivity() {
     lateinit var progressDialog: ProgressDialog
