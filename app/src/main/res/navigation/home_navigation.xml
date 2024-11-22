@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_navigation"
+    app:startDestination="@id/item_home">
+
+    <fragment
+        android:id="@+id/item_home"
+        android:name="com.coderobust.handcraftsshop.ui.main.HomeFragment"
+        android:label="ShopsFragment" />
+    <fragment
+        android:id="@+id/item_shops"
+        android:name="com.coderobust.handcraftsshop.ui.main.ShopsFragment"
+        android:label="ShopsFragment" />
+    <fragment
+        android:id="@+id/item_orders"
+        android:name="com.coderobust.handcraftsshop.ui.main.OrdersFragment"
+        android:label="OrdersFragment" />
+    <fragment
+        android:id="@+id/item_profile"
+        android:name="com.coderobust.handcraftsshop.ui.main.ProfileFragment"
+        android:label="ProfileFragment" />
+</navigation>
