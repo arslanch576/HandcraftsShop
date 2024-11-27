@@ -6,8 +6,8 @@
 
     <fragment
         android:id="@+id/item_home"
-        android:name="com.coderobust.handcraftsshop.ui.main.HomeFragment"
-        android:label="ShopsFragment" />
+        android:name="com.coderobust.handcraftsshop.ui.main.home.HomeFragment"
+        android:label="HomeFragment" />
     <fragment
         android:id="@+id/item_shops"
         android:name="com.coderobust.handcraftsshop.ui.main.ShopsFragment"

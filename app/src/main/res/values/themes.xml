@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.HandcraftsShop" parent="Base.Theme.HandcraftsShop" />
+
+    <style name="ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+    </style>
 </resources>
