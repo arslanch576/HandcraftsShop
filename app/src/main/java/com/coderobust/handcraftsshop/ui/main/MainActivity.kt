@@ -1,8 +1,10 @@
 package ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,13 +16,15 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.coderobust.handcraftsshop.R
 import com.coderobust.handcraftsshop.ui.HandCraft
+import com.coderobust.handcraftsshop.ui.auth.LoginActivity
 import com.coderobust.handcraftsshop.ui.main.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(),OnNavigationItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -51,6 +55,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val viewModel = MainViewModel()
 
         lifecycleScope.launch {
+            viewModel.currentUser.collect {
+                if (it==null){
+                    startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+                    finish()
+                }
+                //TODO: display user data in nav drawer
+            }
+        }
+        lifecycleScope.launch {
             viewModel.isSuccessfullySaved.collect {
                 it?.let {
                     if (it == true)
@@ -72,10 +85,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         handcraft.description = "Customized acrylic painting with beautiful artistic effects"
         handcraft.price = 5000
 
-        viewModel.saveHandCraft(handcraft)
+//        viewModel.saveHandCraft(handcraft)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        TODO("Not yet implemented")
+        if (item.itemId==R.id.item_logout) {
+
+        }else if (item.itemId==R.id.item_about_us){
+
+        }
+        return true
     }
+
 }
