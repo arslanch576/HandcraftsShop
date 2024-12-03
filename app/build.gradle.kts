@@ -66,6 +66,8 @@ dependencies {
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.4")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.4")
+
+    implementation("com.google.code.gson:gson:2.11.0")
 }
 
 kapt {

@@ -63,29 +63,7 @@ class MainActivity : AppCompatActivity(),OnNavigationItemSelectedListener {
                 //TODO: display user data in nav drawer
             }
         }
-        lifecycleScope.launch {
-            viewModel.isSuccessfullySaved.collect {
-                it?.let {
-                    if (it == true)
-                        Toast.makeText(this@MainActivity, "Successfully saved", Toast.LENGTH_SHORT)
-                            .show()
-                }
-            }
-        }
-        lifecycleScope.launch {
-            viewModel.failureMessage.collect {
-                it?.let {
-                    Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
 
-        val handcraft = HandCraft()
-        handcraft.title = "Acrylic Painting"
-        handcraft.description = "Customized acrylic painting with beautiful artistic effects"
-        handcraft.price = 5000
-
-//        viewModel.saveHandCraft(handcraft)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
