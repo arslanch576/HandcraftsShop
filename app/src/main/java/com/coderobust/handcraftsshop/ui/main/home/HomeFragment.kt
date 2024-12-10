@@ -19,9 +19,9 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     lateinit var adapter: HandCraftAdapter
+    val items=ArrayList<HandCraft>()
     lateinit var binding:FragmentHomeBinding
     lateinit var viewModel: HomeFragmentViewModel
-    val items=ArrayList<HandCraft>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

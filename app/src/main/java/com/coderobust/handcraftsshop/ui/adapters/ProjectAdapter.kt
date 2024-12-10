@@ -12,6 +12,7 @@ import com.coderobust.handcraftsshop.databinding.ItemOrderBinding
 import com.coderobust.handcraftsshop.ui.HandCraft
 import com.coderobust.handcraftsshop.ui.Order
 import com.coderobust.handcraftsshop.ui.handcraft.HandCraftDetailsActivity
+import com.coderobust.handcraftsshop.ui.order.OrderDetailsActivity
 import com.coderobust.handcraftsshop.ui.viewHolders.HandCraftViewHolder
 import com.coderobust.handcraftsshop.ui.viewHolders.OrderViewHolder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -72,12 +73,12 @@ class HandCraftAdapter(val items: List<Any>) : RecyclerView.Adapter<RecyclerView
             holder.binding.status.text =order.status
 
             holder.itemView.setOnClickListener {
-//                holder.itemView.context.startActivity(
-//                    Intent(
-//                        holder.itemView.context,
-//                        OrderDetailsActivity::class.java
-//                    ).putExtra("id", HandCraft.id)
-//                )
+                holder.itemView.context.startActivity(
+                    Intent(
+                        holder.itemView.context,
+                        OrderDetailsActivity::class.java
+                    ).putExtra("data", Gson().toJson(order))
+                )
             }
 
 
