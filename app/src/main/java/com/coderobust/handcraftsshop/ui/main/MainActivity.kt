@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.coderobust.handcraftsshop.R
+import com.coderobust.handcraftsshop.model.dataSource.CloudinaryUploadHelper.Companion.initializeCloudinary
 import com.coderobust.handcraftsshop.ui.HandCraft
 import com.coderobust.handcraftsshop.ui.auth.LoginActivity
 import com.coderobust.handcraftsshop.ui.main.MainViewModel
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity(),OnNavigationItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initializeCloudinary(this)
 
         val toolbar: Toolbar =findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)

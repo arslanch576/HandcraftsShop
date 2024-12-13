@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.coderobust.handcraftsshop.R
 import com.coderobust.handcraftsshop.databinding.ItemHandCraftBinding
 import com.coderobust.handcraftsshop.databinding.ItemOrderBinding
@@ -51,6 +52,12 @@ class HandCraftAdapter(val items: List<Any>) : RecyclerView.Adapter<RecyclerView
             holder.binding.desc.text = HandCraft.description
             holder.binding.price.text = "RS: " + HandCraft.price
             holder.binding.rating.text = String.format("⭐ %.1f", HandCraft.rating)
+
+            Glide.with(holder.itemView.context)
+                .load(HandCraft.image)
+                .error(R.drawable.logo)
+                .placeholder(R.drawable.logo)
+                .into(holder.binding.productImage)
 
             holder.itemView.setOnClickListener {
                 holder.itemView.context.startActivity(

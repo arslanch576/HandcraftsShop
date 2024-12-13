@@ -4,6 +4,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -54,6 +55,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore-ktx")
@@ -68,6 +70,9 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.8.4")
 
     implementation("com.google.code.gson:gson:2.11.0")
+
+    implementation("com.cloudinary:cloudinary-android:2.1.0")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
 }
 
 kapt {
