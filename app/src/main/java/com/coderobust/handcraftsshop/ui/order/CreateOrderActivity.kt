@@ -11,6 +11,7 @@ import com.coderobust.handcraftsshop.ui.Order
 import com.google.firebase.auth.FirebaseUser
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import ui.main.MainActivity
 import java.text.SimpleDateFormat
 
 class CreateOrderActivity : AppCompatActivity() {
@@ -79,6 +80,7 @@ class CreateOrderActivity : AppCompatActivity() {
             order.postalAddress=postalAddress
             order.specialRequirements=specialRequirements
             order.userContact=userContact
+            order.userFCMToken=MainActivity.fcmToken
             order.orderDate=SimpleDateFormat("yyyy-MM-dd HH:mm a").format(System.currentTimeMillis())
             val user=viewModel.getCurrentUser()
             order.userEmail=user?.email!!

@@ -13,6 +13,7 @@ import com.coderobust.handcraftsshop.databinding.ActivityMainBinding
 import com.coderobust.handcraftsshop.databinding.ActivityOrderDetailsBinding
 import com.coderobust.handcraftsshop.model.repositories.AuthRepository
 import com.coderobust.handcraftsshop.ui.Order
+import com.coderobust.handcraftsshop.utils.FCMHelper
 import com.google.firebase.auth.FirebaseUser
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.collect
@@ -20,15 +21,15 @@ import kotlinx.coroutines.launch
 
 class OrderDetailsActivity : AppCompatActivity() {
     lateinit var binding: ActivityOrderDetailsBinding;
-    lateinit var order:Order
+    lateinit var order: Order
     lateinit var viewModel: OrderDetailsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityOrderDetailsBinding.inflate(layoutInflater)
+        binding = ActivityOrderDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel=OrderDetailsViewModel()
-        order= Gson().fromJson(intent.getStringExtra("data"),Order::class.java)
+        viewModel = OrderDetailsViewModel()
+        order = Gson().fromJson(intent.getStringExtra("data"), Order::class.java)
 
         binding.orderId.text = order.id
         binding.orderDate.text = order.orderDate
@@ -41,45 +42,48 @@ class OrderDetailsActivity : AppCompatActivity() {
         binding.userContact.text = order.userContact
         binding.status.text = order.status
 
-        val user:FirebaseUser = AuthRepository().getCurrentUser()!!
-        var isAdmin=false
+        val user: FirebaseUser = AuthRepository().getCurrentUser()!!
+        var isAdmin = false
         if (user.email.equals("arslan@gmail.com"))
-            isAdmin=true
+            isAdmin = true
 
-        if (!order.status.equals("Order Placed")||!isAdmin)
-            binding.confirmOrder.visibility= View.GONE
+        if (!order.status.equals("Order Placed") || !isAdmin)
+            binding.confirmOrder.visibility = View.GONE
 
-        if (!order.status.equals("Order Confirmed")||!isAdmin)
-            binding.deliverOrder.visibility= View.GONE
+        if (!order.status.equals("Order Confirmed") || !isAdmin)
+            binding.deliverOrder.visibility = View.GONE
 
-        if (!order.status.equals("Delivered")||isAdmin)
-            binding.confirmOrderReceived.visibility= View.GONE
+        if (!order.status.equals("Delivered") || isAdmin)
+            binding.confirmOrderReceived.visibility = View.GONE
 
         binding.confirmOrder.setOnClickListener {
-            order.status="Order Confirmed"
+            order.status = "Order Confirmed"
             viewModel.updateOrder(order)
         }
         binding.deliverOrder.setOnClickListener {
-            order.status="Delivered"
+            order.status = "Delivered"
             viewModel.updateOrder(order)
         }
         binding.confirmOrderReceived.setOnClickListener {
-            order.status="Order Received"
+            order.status = "Order Received"
             viewModel.updateOrder(order)
         }
 
         lifecycleScope.launch {
-            viewModel.isUpdated.collect{
+            viewModel.isUpdated.collect {
                 it?.let {
-                    Toast.makeText(this@OrderDetailsActivity,"Updated",Toast.LENGTH_SHORT).show()
+                    if (order.status.equals("Order Confirmed")) {
+                        FCMHelper().sendNotificationToUser(order.userFCMToken, "Order confirmed", "Your order of ${order.item?.title} has been confirmed", this@OrderDetailsActivity)
+                    }
+                    Toast.makeText(this@OrderDetailsActivity, "Updated", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
         }
         lifecycleScope.launch {
-            viewModel.failureMessage.collect{
+            viewModel.failureMessage.collect {
                 it?.let {
-                    Toast.makeText(this@OrderDetailsActivity,it,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@OrderDetailsActivity, it, Toast.LENGTH_SHORT).show()
                 }
             }
         }

@@ -10,6 +10,7 @@ class Order {
     var userId: String=""
     var userName: String=""
     var userEmail: String=""
+    var userFCMToken: String=""
     var status: String=""
     var orderDate: String=""
 
