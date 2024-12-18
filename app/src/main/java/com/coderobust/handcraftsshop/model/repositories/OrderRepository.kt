@@ -11,7 +11,7 @@ class OrderRepository {
 
     suspend fun saveOrder(order: Order): Result<Boolean> {
         try {
-            val document = orderCollection.document()
+            val document = FirebaseFirestore.getInstance().collection("orders").document()
             order.id = document.id
             document.set(order).await()
             return Result.success(true)

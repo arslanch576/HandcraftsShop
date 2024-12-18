@@ -3,21 +3,16 @@ package com.coderobust.handcraftsshop.ui.order
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.coderobust.handcraftsshop.R
-import com.coderobust.handcraftsshop.databinding.ActivityMainBinding
 import com.coderobust.handcraftsshop.databinding.ActivityOrderDetailsBinding
 import com.coderobust.handcraftsshop.model.repositories.AuthRepository
+import com.coderobust.handcraftsshop.model.repositories.NotificationsRepository
 import com.coderobust.handcraftsshop.ui.Order
-import com.coderobust.handcraftsshop.utils.FCMHelper
 import com.google.firebase.auth.FirebaseUser
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import ui.main.MainActivity
 
 class OrderDetailsActivity : AppCompatActivity() {
     lateinit var binding: ActivityOrderDetailsBinding;
@@ -73,7 +68,13 @@ class OrderDetailsActivity : AppCompatActivity() {
             viewModel.isUpdated.collect {
                 it?.let {
                     if (order.status.equals("Order Confirmed")) {
-                        FCMHelper().sendNotificationToUser(order.userFCMToken, "Order confirmed", "Your order of ${order.item?.title} has been confirmed", this@OrderDetailsActivity)
+                        NotificationsRepository().sendNotification(order.userId, "Order confirmed", "Your order of ${order.item?.title} has been confirmed", this@OrderDetailsActivity)
+                    }
+                    if (order.status.equals("Delivered")) {
+                        NotificationsRepository().sendNotification(order.userId, "Order dispatched", "Your order of ${order.item?.title} has been dispatched, you will receive it soon at your postal address", this@OrderDetailsActivity)
+                    }
+                    if (order.status.equals("Order Received")) {
+                        NotificationsRepository().sendNotification(MainActivity.adminUid, "Order Received", "${order.userName} has received the order ${order.item?.title}.", this@OrderDetailsActivity)
                     }
                     Toast.makeText(this@OrderDetailsActivity, "Updated", Toast.LENGTH_SHORT).show()
                     finish()

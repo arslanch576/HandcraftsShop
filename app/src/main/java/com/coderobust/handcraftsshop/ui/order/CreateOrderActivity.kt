@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.coderobust.handcraftsshop.databinding.ActivityCreateOrderBinding
+import com.coderobust.handcraftsshop.model.repositories.NotificationsRepository
 import com.coderobust.handcraftsshop.ui.HandCraft
 import com.coderobust.handcraftsshop.ui.Order
 import com.google.firebase.auth.FirebaseUser
@@ -57,6 +58,7 @@ class CreateOrderActivity : AppCompatActivity() {
                         "Order saved successfully",
                         Toast.LENGTH_LONG
                     ).show()
+                    NotificationsRepository().sendNotification(MainActivity.adminUid, "New order", "A new order of ${handCraft.title} has been placed.", this@CreateOrderActivity)
                     finish()
                 }
             }
@@ -80,7 +82,6 @@ class CreateOrderActivity : AppCompatActivity() {
             order.postalAddress=postalAddress
             order.specialRequirements=specialRequirements
             order.userContact=userContact
-            order.userFCMToken=MainActivity.fcmToken
             order.orderDate=SimpleDateFormat("yyyy-MM-dd HH:mm a").format(System.currentTimeMillis())
             val user=viewModel.getCurrentUser()
             order.userEmail=user?.email!!

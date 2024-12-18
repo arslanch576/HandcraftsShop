@@ -22,6 +22,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.coderobust.handcraftsshop.R
 import com.coderobust.handcraftsshop.model.dataSource.CloudinaryUploadHelper.Companion.initializeCloudinary
+import com.coderobust.handcraftsshop.model.repositories.AuthRepository
+import com.coderobust.handcraftsshop.model.repositories.NotificationsRepository
 import com.coderobust.handcraftsshop.ui.HandCraft
 import com.coderobust.handcraftsshop.ui.auth.LoginActivity
 import com.coderobust.handcraftsshop.ui.main.MainViewModel
@@ -36,7 +38,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     companion object {
-        var fcmToken = ""
+        var adminUid = "YIIQGVn8hoVVcJ7eiZaH21ADEyz1"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,13 +108,19 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         ) {
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         } else {
+            Log.d("FCM", "Fetching FCM registration")
+
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     Log.w("FCM", "Fetching FCM registration token failed", task.exception)
                     return@OnCompleteListener
                 }
+                Log.d("FCM", "Fetching FCM registration token failed ${task.result!!}")
 
-                fcmToken = task.result
+                lifecycleScope.launch {
+                    val result=NotificationsRepository().saveToken(AuthRepository().getCurrentUser()?.uid!!,task.result!!)
+                    Log.d("FCM", "askNotificationPermission: ${result.exceptionOrNull()}")
+                }
 
             })
         }
